@@ -1,0 +1,7 @@
+docker container run --name mg --publish 27017:27017 -d mongo
+docker container exec -it mg bash
+mongo
+use rkinaDb
+db.createUser({ user: "dindon", pwd: "qwe", roles: [] })
+exit
+mongo --port 27017 -u dindon -p qwe --authenticatioinDatabase rkinaDb
