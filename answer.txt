@@ -1,0 +1,11 @@
+2. db.Students.count()
+3. db.Students.countDocuments()
+4. db.Students.find({"Специальность": "Математика" }).count()
+5. db.Students.find({"Специальность": "Математика", "Курс": 2 }).count()
+6. db.Students.find({"Специальность": "Математика", "Курс": {$ne: 2} }).count()
+7. db.Students.find({"Специальность": "Математика", "Курс": {$gt: 3} }).count()
+8. db.Students.find({"Специальность": {$in: ["Юруспруденция", "Экономика"]}, "Курс": {$ne: 3} }).count()
+9. db.Students.distinct("Гражданство").length
+10. db.Students.aggregate([{"$project": {"_id": 1, "Факультет": 1, "Гражданство": 1}}, {"$limit": 10}, {"$sort": {"Гражданство":1}}])
+12. db.Students.aggregate([{$match: {_id: "1032102469"}}, {$lookup: {from: 'Language2', localField: 'idLanguage', foreignField: '_id', as: 'langs'}}, {$project: {"langs":1}}])
+12.1 db.Answer.insertOne("12": 'db.Students.aggregate([{$match: {_id: "1032102469"}}, {$lookup: {from: "Language2", localField: "idLanguage", foreignField: "_id", as: "langs"}}, {$project: {"langs":1}}])')

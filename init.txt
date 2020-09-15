@@ -5,3 +5,6 @@ use rkinaDb
 db.createUser({ user: "dindon", pwd: "qwe", roles: [] })
 exit
 mongo --port 27017 -u dindon -p qwe --authenticatioinDatabase rkinaDb
+docker cp Students.json mg:/tmp/Students.json
+
+3. db.Students.countDocuments()
