@@ -12,4 +12,10 @@ mongoimport --jsonArray --db rkinaDb --collection Languages2 --file tmp/Language
 
 mongoexport --collection=Answer --db=rkinaDb --out=answer.json
 
-docker cp mg:answer.json . 
+docker cp mg:answer.json .
+
+Lab 3
+
+docker cp Students/Students.json mg:/tmp/Students3.json
+
+mongoimport --jsonArray --db lab3 --collection Students --file tmp/Students3.json 
