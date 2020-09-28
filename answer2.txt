@@ -1,0 +1,83 @@
+# db.Answer.insertOne({ : })
+
+2. db.Students.count()
+    db.Answer.insertOne({2:69329})
+
+3. db.Students.countDocuments()
+    db.Answer.insertOne({3:69329})
+
+4. db.Students.find({"Специальность": "Математика" }).count()
+    db.Answer.insertOne({4:285})
+
+5. db.Students.find({"Специальность": "Математика", "Курс": 2 }).count()
+    db.Answer.insertOne({5:126})
+
+6. db.Students.find({"Специальность": "Математика", "Курс": {$ne: 2} }).count()
+    db.Answer.insertOne({6:159})
+
+7. db.Students.find({"Специальность": "Математика", "Курс": {$gt: 3} }).count()
+    db.Answer.insertOne({7:41})
+
+8. db.Students.find({"Специальность": {$in: ["Юруспруденция", "Экономика"]}, "Курс": {$ne: 3} }).count()
+    db.Answer.insertOne({8:3317})
+
+9. db.Students.distinct("Гражданство").length
+    db.Answer.insertOne({9:183})
+
+10. var res = db.Students.aggregate([{"$project": {"_id": 1, "Факультет": 1, "Гражданство": 1}}, {"$limit": 10}, {"$sort": {"Гражданство":1}}]).toArray()
+    db.Answer.insertOne({10: res})
+
+12. var res = db.Students.aggregate([{$match: {_id: '1032102469'}},
+    {$lookup: {from: 'Languages2', localField: 'idLanguage', foreignField: '_id', as: 'langs'}}, 
+    {$project: {'langs':1}}]).toArray()
+    db.Answer.insertOne({12: res})
+
+13. db.Students.find({idLanguage: {$ne: null}}).count()
+    db.Answer.insertOne({13: 62417})
+
+14. db.Students.find({idLanguage: null}).count()
+    db.Answer.insertOne({14: 6912})
+
+15. db.Students.find({idLanguage: {$in: [3,4,5]}}).count()
+    db.Answer.insertOne({15: 34647})
+
+16. db.Answer.insertOne({16: 3})
+
+17. db.Students.find({idLanguage: 3}).count()
+    db.Answer.insertOne({17: 13890})
+
+18. db.Students.find({idLanguage: 5}).count()
+    db.Answer.insertOne({18: 6942})
+
+19. db.Students.updateMany(
+    {"Курс": {$ne: 6}},
+    {$inc: {"Курс": 1}}
+)
+    var res = db.Students.find().skip(500).limit(1500).toArray()
+    db.Answer.insertOne({19: res})
+
+20. db.Students.find({_id: {$regex: "[0-9]{3}209[0-9]{4}"}}).count()
+    db.Answer.insertOne({20: 3124})
+
+21. db.Students.find({_id: {$regex: "[0-9]{3}20[0-5]{1}[0-9]{4}"}}).count()
+    db.Answer.insertOne({21: 20059})
+
+22. var res1 = db.Students2.find({"Курс": {$type: "string"}}).count()
+    var res2 = db.Students2.find({"Курс": {$type: "number"}}).count()
+
+    db.Answer.insertOne({22: {
+        "текстовое": res1,
+        "числовое": res2
+    }})
+
+23.  db.Students.aggregate(
+    [
+        {$lookup: {from: 'Languages2', localField: 'idLanguage', foreignField: '_id', as: 'Languages'}},
+        {$unwind: "$Languages"},
+        {$addFields: { Languages: "$Languages.Languages"}},
+        {$out: "Students"}
+    ]
+    )
+
+    var res = db.Students.find().skip(100).limit(100).toArray()
+    db.Answer.insertOne({23: res})
