@@ -1,0 +1,157 @@
+1: 
+    var cur = db.Students.find().limit(100);
+    var res = 0;
+    cur.forEach(function(doc){
+        res += doc.Курс;
+    })
+    print(res)
+
+2: 
+    var cur = db.Students.find({"Факультет": "Экономический"}).skip(90).limit(10);
+    cur.forEach(function(doc){
+        print(doc._id);
+    })
+
+3: 
+    var n = 1;
+    var customLimit = 13;
+    db.Students.find().limit(customLimit).forEach(function(doc){
+        print(n++, doc._id);
+    })
+
+4: 
+    var pageNumber = 3;
+    var objectsPerPage = 4;
+    var cur = db.Students.find({}, {"_id": 1, "Пол": 1, "Курс": 1, "Гражданство": 1, "Уровень": 1});
+    cur.skip(objectsPerPage * (pageNumber - 1)).limit(objectsPerPage);
+
+5: 
+    db.Students.updateMany(
+        {
+        "Факультет": "Медицинский",
+        "Форма обучения":"Очная",
+        $or: [
+            {$and: [
+                {"Специальность": "Лечебное дело"},
+                {"Курс": {$lt: 6}}
+            ]},
+            {$and:[
+                {"Специальность": {$ne: "Лечебное дело"}},
+                {"Курс": {$lt: 5}}
+            ]}
+        ]},
+        {$inc: {"Курс": 1}}
+    )
+
+    db.Students.updateMany(
+        {
+        "Факультет": "Медицинский",
+        "Форма обучения":"Очная",
+        "Статус": "Обучение",
+        $or: [
+            {$and: [
+                {"Специальность": "Лечебное дело"},
+                {"Курс": 6},
+            ]},
+            {$and:[
+                {"Специальность": {$ne: "Лечебное дело"}},
+                {"Курс": 5},
+            ]}
+        ]},
+        {$set: {"Статус": "Завершение"}}
+    )
+
+    db.Students.find(
+        {"Факультет": "Медицинский",
+        "Форма обучения":"Очная",
+        "Статус": "Завершение"}
+    ).count()
+
+6:
+    var days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+
+
+    db.Mails.find({
+        "headers.To" : "ebass@enron.com"
+    })
+
+    var mon = 'Mon';
+
+    var days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+
+    days.forEach(function(day){
+        var countDay = db.Mails.find({
+                "headers.To": "ebass@enron.com",
+                "headers.Date": {$regex: day + "*"}
+            }).count();
+        print(day, countDay);
+    })
+
+7: 
+    var res1 = db.Mails.find(
+       { "headers.X-From": "Shanna Husser"},
+       { "headers.X-To": "Ericc Bass"}
+    ).count();
+
+    
+    var res2 = db.Mails.find(
+       { "headers.X-From": "Shanna Husser"},
+       { "headers.X-To": "Ericc Bass"}
+    ).count();
+
+    print(res1, res2)
+
+8: 
+    db.Mails.aggregate([
+        { $match: {"headers.X-From": "Laurie Ellis"}},
+        { $group: {_id: "$headers.Subject", "Количество": { $sum: 1}}}
+    ]).toArray()
+
+9: 
+
+    db.Mails.aggregate([{
+        $project: {
+            _id: 0,
+            "headers.From": 1,
+            "test": {$eq: ["$headers.To", "$headers.From"]}
+        }
+    },
+    { $match: {test: true}},
+    { $group: {_id: "$headers.From", "Количество": { $sum: 1}}},
+    { $count: "Количество"}
+    ])
+
+10:
+    db.Mails.aggregate([
+        { $group: {_id: "$subFolder", "Количество": { $sum: 1}}},
+        { $sort: { Количество: -1}},
+        { $limit: 1}
+    ])
+     
+11:
+    db.Mails.aggregate([
+        { $group: {_id: "$headers.From", "Количество": { $sum: 1}}},
+        { $count: "Количество"},
+    ])
+
+12:
+    var days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+
+    days.forEach(function(day){
+        var countDay = db.Mails.find({
+                "headers.Date": {$regex: day + "*"}
+            }).count();
+        print(day, countDay);
+    })
+
+4.2:
+    1:
+        db.Students3.updateMany({
+            "Status":"Учится",
+            "Class": {$lt: 3}},
+            {$inc: {"Курс": 1}}
+        )
+
+    2:
+        
+
