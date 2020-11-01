@@ -3,7 +3,7 @@
 2. db.Students.count()
     db.Answer.insertOne({2:69329})
 
-3. db.Students.countDocuments()
+3. db.Students.countDocuments({})
     db.Answer.insertOne({3:69329})
 
 4. db.Students.find({"Специальность": "Математика" }).count()
@@ -18,7 +18,7 @@
 7. db.Students.find({"Специальность": "Математика", "Курс": {$gt: 3} }).count()
     db.Answer.insertOne({7:41})
 
-8. db.Students.find({"Специальность": {$in: ["Юруспруденция", "Экономика"]}, "Курс": {$ne: 3} }).count()
+8. db.Students.find({"Специальность": {$in: ["Юриспруденция", "Экономика"]}, "Курс": {$ne: 3} }).count()
     db.Answer.insertOne({8:3317})
 
 9. db.Students.distinct("Гражданство").length

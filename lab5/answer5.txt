@@ -1,0 +1,128 @@
+1:
+
+db.Answer5.insertMany([
+    { 
+        "lastName": "Пушкин",
+        "firstName": "Александр",
+        "secName": "Сергеевич"  
+    },
+    { 
+        "lastName": "Лермонтов",
+        "firstName": "Михаил",
+        "secName": "Юрьевич"  
+    },
+    { 
+        "lastName": "Есенин",
+        "firstName": "Сергей",
+        "secName": "Александрович"  
+    },
+    { 
+        "lastName": "Маяковский",
+        "firstName": "Владимир",
+        "secName": "Владимирович"  
+    },
+    { 
+        "lastName": "Пастернак",
+        "firstName": "Борис",
+        "secName": "Леонидович"  
+    },
+    { 
+        "lastName": "Цветаева",
+        "firstName": "Марина",
+        "secName": "Ивановна"  
+    },
+    { 
+        "lastName": "Ахматова",
+        "firstName": "Анна",
+        "secName": "Андреевна"  
+    }
+])
+
+
+2: 
+db.Answer5.updateMany(
+   {"_id" :{"$exists":true}},
+   [
+       {
+           "$set":
+           {
+               "ФИО":{
+                   "$concat":
+                   ["$lastName"," ", "$firstName", " ", "$secName"]
+                }
+            }
+        }
+    ]
+)
+
+3: 
+db.Answer5.updateMany(
+   {"_id": {"$exists":true}},
+   [
+       {
+       "$set":
+            {
+                "ФИО аббр":
+                {
+                    "$concat":
+                        [
+                            "$lastName", " ", 
+                            {$substr: ["$firstName", 0, 2] }, 
+                            " ", 
+                            {$substr: ["$secName", 0, 2] }
+                        ]
+                }
+            }
+        }
+   ]
+)
+
+4:
+
+db.Answer5.updateMany(
+   {
+       "secName": 
+            {$regex: "а$"}
+   },
+    { $set: { "Пол": "Женский"} }
+)
+
+db.Answer5.updateMany(
+   {
+       "secName": 
+            {$regex: "ч$"}
+   },
+    { $set: { "Пол": "Мужской"} }
+)
+
+5:
+
+db.Answer5.updateMany(
+   {
+       "secName": 
+            {$regex: "а$"}
+   },[{ 
+       $set: { "Обращение": 
+            {
+                $concat: 
+                [
+                "Уважаемая",
+                " ",
+                "$ФИО"]
+            }
+        } 
+    }]  
+)
+
+db.Answer5.updateMany(
+   {
+       "secName": 
+            {$regex: "ч$"}
+   },[{ 
+       $set: { "Обращение": 
+            { $concat: 
+                [ "Уважаемая", " ", "$ФИО" ]
+            }
+        } 
+    }]  
+)

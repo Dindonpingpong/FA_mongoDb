@@ -10,9 +10,9 @@ docker cp Students.json mg:/tmp/Students.json
 mongoimport --jsonArray --db rkinaDb --collection Students --file tmp/Students.json 
 mongoimport --jsonArray --db rkinaDb --collection Languages2 --file tmp/Languages2.json
 
-mongoexport --collection=Answer --db=rkinaDb --out=answer.json
+mongoexport --collection=Answer3 --db=lab3 --out=answer3.json
 
-docker cp mg:answer.json .
+docker cp mg:answer3.json .
 
 Lab 3
 
@@ -21,4 +21,4 @@ docker cp data/StudentsUTF8.json mg:/tmp/StudentsUTF8.json
 
 mongoimport --jsonArray --db lab3 --collection Students --file tmp/Students3.json 
 
-mongoimport --jsonArray --db rkinaDb --collection Students3 --file tmp/StudentsUTF8.json 
+mongoimport --jsonArray --db rkinaDb --collection Students3 --file tmp/StudentsUTF8.json

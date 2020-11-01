@@ -1,0 +1,49 @@
+1.
+
+db.Students.updateMany(
+    {"_id" :{"$exists":true}},
+    [{
+        $set: {
+            "date": {
+                $substr: ["$_id", 3, 3]
+            }
+        }
+    }]
+)
+
+
+2.
+
+db.Students.updateMany(
+   {
+       "date": 
+            {$regex: "^0"}
+   },
+    [{ $set: { "newDate": {
+        $concat: [
+            "19",
+            {$substr: ["$date", 1, 2] }
+        ]}
+    }}]
+)
+
+db.Students.updateMany(
+   {
+       "date": 
+            {$regex: "^2"}
+   },
+    [{ $set: { "newDate": {
+        $concat: [
+            "20",
+            {$substr: ["$date", 1, 2] }
+        ]}
+    }}]
+)
+
+db.Students.find().forEach(function(doc){
+    var tmp = new Date(doc.newDate);
+    db.Students.updateOne(
+        {},
+        { $set: { "date": tmp} }
+    );
+})

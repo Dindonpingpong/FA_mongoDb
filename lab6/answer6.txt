@@ -1,0 +1,67 @@
+1:
+    1. Первая команда создает объект с типа точка (x,y). Вторая команда создает массив с двумя координатами
+    2. Индекс 2dsphere для GeoJson. Индекс 2d для точек
+    3. Проверка на пересечении точки из коллекции и линии
+    4. Первая команда проверяет вхождении точки в полигон. Вторая команда проверяет вхождение точки в сферу
+    5. Все документы находящиеся от (0,0) не более чем на 19000 метров
+    6. Все документы, которые рядом с (1, 1000001), у которых будет создано поле distanceField со значением расстояние до точки, находятся документы с именем 1
+    7. Поиск ресторанов близ (-74,40.74) не дальше 1000
+
+
+2: 
+    db.neigh.distinct("name").length
+
+3: 
+    db.rest.find().count()
+
+4: 
+    db.rest.aggregate([
+        { $group: {_id: "$name", "Количество": { $sum: 1}} },
+        { $sort: { Количество: -1 } },
+        { $match: { "Количество": {$gt: 1}} }
+    ])
+
+5:
+
+    5.1 db.neigh.find({
+        "name": "Rosa Dipietrantinio"
+    })
+
+    5.1 db.neigh.find({
+        "name": "Aquiladolce Inc"
+    })
+
+    5.1 db.neigh.find({
+        "name": "Golden Lin Garden"
+    })
+
+    5.1 db.neigh.find({
+        "name": " The Back Room"
+    })
+
+    5.1 db.neigh.find({
+        "name": ". Casa Enrique"
+    })
+
+6:
+    db.neigh.createIndex( {geometry: '2dsphere'})
+
+    var tmp = db.neigh.find({geometry: 
+        {$geoIntersects: {
+                $geometry:
+                {"type": "Point",
+                "coordinates": [-73.9321231,40.6519276]
+                }
+            }
+        }
+    }, {_id: 0, geometry: 1})
+
+    db.rest.find({ location:
+        {$geoWithin:
+        {
+            $geometry: { tmp }
+            
+    }}}, {_id: 0, name: 0})
+            }
+        }
+    }).count()
